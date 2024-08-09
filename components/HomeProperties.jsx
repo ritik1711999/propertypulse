@@ -1,13 +1,13 @@
 import React from "react";
 import PropertyCard from "./PropertyCard";
 import Link from "next/link";
-import { fetchProperties } from "@/utils/requests";
+import Property from "@/models/Property";
 
 async function HomeProperties() {
-  const { properties } = await fetchProperties();
-  const recentProperties = properties
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 3);
+  const recentProperties = await Property.find({})
+    .sort({ createdAt: -1 })
+    .limit(3)
+    .lean();
   return (
     <>
       <section className="px-4 py-6">
